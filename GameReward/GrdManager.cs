@@ -5,14 +5,16 @@ namespace GameReward
 {
     public class GrdManager
     {
-        private const string baseUrl = "https://gamereward.io/appapi/";
+        private const string mainNetUrl = "https://gamereward.io/appapi/";
+        private const string testNetUrl = "https://test.gamereward.io/appapi/";
         private static string api_Id = "";
         private static string api_Secret = "";
-
-        public static void Init(string appId, string secret)
+        private static string url = "";
+        public static void Init(string appId, string secret,GrdNet net)
         {
             api_Id = appId;
             api_Secret = secret;
+            url = net == GrdNet.Main ? mainNetUrl : testNetUrl;
         }
 
         public static string Md5(string s)
@@ -38,9 +40,9 @@ namespace GameReward
         {
             if (isGet)
             {
-                return GetData(baseUrl + action, parameters);
+                return GetData(url + action, parameters);
             }
-            return PostData(baseUrl + action, parameters);
+            return PostData(url + action, parameters);
 
         }
 
@@ -571,5 +573,9 @@ namespace GameReward
             return new GrdResultBase(error, message);
         }
 
+    }
+    public enum GrdNet
+    {
+        Main,Test
     }
 }
